@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>🧠 AI Test Case Generator</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f0f4ff, #e3e7ff);
+      color: #333;
+      text-align: center;
+      padding: 50px;
+    }
+
+    h1 {
+      margin-bottom: 30px;
+      color: #3b4cca;
+    }
+
+    textarea, input[type="submit"] {
+      margin-top: 15px;
+      width: 70%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    textarea {
+      height: 120px;
+      resize: none;
+    }
+
+    input[type="submit"] {
+      background-color: #5b6df7;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #3b4cca;
+    }
+
+    .result {
+      margin-top: 30px;
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      text-align: left;
+      width: 70%;
+      margin-left: auto;
+      margin-right: auto;
+      position: relative;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      padding: 6px 12px;
+      font-size: 14px;
+      border: none;
+      border-radius: 5px;
+      background-color: #5b6df7;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .copy-btn:hover {
+      background-color: #3b4cca;
+    }
+
+    pre {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <h1>🧠 AI Test Case Generator</h1>
+
+  <form method="POST">
+    {% csrf_token %}
+    <textarea name="requirement" placeholder="Enter your software requirement here..." required>{{ request.POST.requirement }}</textarea><br>
+    <input type="submit" value="Generate Test Cases">
+  </form>
+
+  {% if testcases %}
+  <div class="result">
+    <button class="copy-btn" onclick="copyText()">Copy</button>
+    <h2>Generated Test Cases</h2>
+    <pre id="testcases">{{ testcases }}</pre>
+  </div>
+  {% elif error %}
+  <div class="result error">
+    <h2>Error generating test cases:</h2>
+    <pre>{{ error }}</pre>
+  </div>
+  {% endif %}
+
+  <script>
+    function copyText() {
+      const text = document.getElementById("testcases").innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        alert("Test cases copied to clipboard!");
+      });
+    }
+  </script>
+</body>
+</html>
